@@ -6,7 +6,7 @@
 
 ER-диаграмма создана через DataGrip.
 
-![ER.png](docs%2FER.png)
+![ER.png](docs/ER.png)
 
 ### Код для создание базы данных
 
