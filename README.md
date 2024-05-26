@@ -53,10 +53,11 @@ create table public.clients
         match simple on update no action on delete no action
 );
 
-create table public.currencies
+create table currencies
 (
-    id   integer primary key   not null default nextval('currencies_id_seq'::regclass),
-    name character varying(50) not null
+    id     serial primary key,
+    name   varchar(50)      not null,
+    in_rub double precision not null
 );
 
 create table public.departments
@@ -100,10 +101,10 @@ create table public.positions
 Заполним справочники
 
 ```postgresql
-INSERT INTO public.currencies (name)
-VALUES ('Рубли'),
-       ('Доллары США'),
-       ('Юани');
+INSERT INTO public.currencies (name, in_rub)
+VALUES ('Рубли', 1.00),
+       ('Доллары США', 89.35),
+       ('Юани', 12.60);
 
 INSERT INTO public.departments (name)
 VALUES ('Отдел вкладов'),
@@ -244,17 +245,27 @@ from public.accounts
 1. Получить список сотрудников, курирующих вкладчиков вклада
    «Накопительный»
 
+![1.png](queries/1.png)
+
 2. Получить список вкладчиков, закрывших свои вклады, в заданный период
    времени
+
+![2.png](queries/2.png)
 
 3. Определить ТОП 3 наиболее популярных вкладов банка (критерий –
    количество вкладчиков)
 
+![3.png](queries/3.png)
+
 4. Определить вклад, который «принес» меньше всего денежных средств
    банку (сумма вложенных средств по вкладу) в течение заданного периода.
 
+![4.png](queries/4.png)
+
 5. Получить ТОП 3 вкладчиков, имеющих вклады в иностранной валюте.
    Суммарный объем вкладов определяется в рублях.
+
+![5.png](queries/5.png)
 
 6. Сформировать ведомость получения доходов клиентами банка
    по закрытым счетам за заданный период в табличной форме
@@ -263,3 +274,5 @@ from public.accounts
 |---------------------|------------------------|-------------------|-----------------------|------------------------|
 
 где "Сумма накопления, руб." = " Сумма вложенная, руб." * ("Срок хранения, месяцев" * "Ставка, % годовых" : 12) : 100
+
+![6.png](queries/6.png)
