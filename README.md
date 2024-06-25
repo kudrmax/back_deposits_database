@@ -91,30 +91,16 @@ id serial primary key
 Код для создание БД:
 
 ```postgresql
-create table public.accounts
+create table public.positions
 (
-    id         integer primary key not null default nextval('accounts_account_number_seq'::regclass),
-    client_id  integer             not null,
-    deposit_id integer             not null,
-    date_open  date                not null,
-    date_close date,
-    amount     numeric(15, 2)      not null,
-    foreign key (client_id) references public.clients (id)
-        match simple on update no action on delete no action,
-    foreign key (deposit_id) references public.deposits (id)
-        match simple on update no action on delete no action
+    id   serial primary key,
+    name character varying(50) not null
 );
 
-create table public.clients
+create table public.departments
 (
-    id          integer primary key    not null default nextval('clients_client_id_seq'::regclass),
-    full_name   character varying(100) not null,
-    passport    character varying(20)  not null,
-    adress      character varying(200),
-    phone       character varying(20),
-    employee_id integer                not null,
-    foreign key (employee_id) references public.employees (id)
-        match simple on update no action on delete no action
+    id   serial primary key,
+    name character varying(50) not null
 );
 
 create table currencies
@@ -124,15 +110,9 @@ create table currencies
     in_rub double precision not null
 );
 
-create table public.departments
-(
-    id   integer primary key   not null default nextval('departments_id_seq'::regclass),
-    name character varying(50) not null
-);
-
 create table public.deposits
 (
-    id          integer primary key   not null default nextval('deposits_code_seq'::regclass),
+    id          serial primary key,
     name        character varying(50) not null,
     duration    integer               not null,
     rate        numeric(5, 2)         not null,
@@ -141,21 +121,44 @@ create table public.deposits
         match simple on update no action on delete no action
 );
 
+
 create table public.employees
 (
-    id            integer primary key not null default nextval('employees_employee_id_seq'::regclass),
-    position_id   integer             not null,
-    department_id integer             not null,
+    id            serial primary key,
+    position_id   integer not null,
+    department_id integer not null,
     foreign key (department_id) references public.departments (id)
         match simple on update no action on delete no action,
     foreign key (position_id) references public.positions (id)
         match simple on update no action on delete no action
 );
 
-create table public.positions
+
+create table public.clients
 (
-    id   integer primary key   not null default nextval('positions_id_seq'::regclass),
-    name character varying(50) not null
+    id          serial primary key,
+    full_name   character varying(100) not null,
+    passport    character varying(20)  not null,
+    adress      character varying(200),
+    phone       character varying(20),
+    employee_id integer                not null,
+    foreign key (employee_id) references public.employees (id)
+        match simple on update no action on delete no action
+);
+
+
+create table public.accounts
+(
+    id         serial primary key,
+    client_id  integer        not null,
+    deposit_id integer        not null,
+    date_open  date           not null,
+    date_close date,
+    amount     numeric(15, 2) not null,
+    foreign key (client_id) references public.clients (id)
+        match simple on update no action on delete no action,
+    foreign key (deposit_id) references public.deposits (id)
+        match simple on update no action on delete no action
 );
 
 ```
@@ -311,25 +314,84 @@ from public.accounts
 
 ![1.png](queries/1.png)
 
+```postgresql
+SELECT e.id, d.name
+FROM employees e
+         JOIN clients c ON e.id = c.employee_id
+         JOIN accounts a ON c.id = a.client_id
+         JOIN deposits d ON a.deposit_id = d.id
+WHERE d.name = 'Накопительный';
+```
+
 2. Получить список вкладчиков, закрывших свои вклады, в заданный период
    времени
 
 ![2.png](queries/2.png)
+
+```postgresql
+SELECT c.id, c.full_name, c.passport, c.adress, c.phone, a.date_close
+FROM clients c
+         JOIN accounts a ON c.id = a.client_id
+WHERE a.date_close IS NOT NULL
+  AND a.date_close BETWEEN 'start_date' AND 'end_date';
+
+SELECT c.id, c.full_name, c.passport, c.adress, c.phone, a.date_close
+FROM accounts a
+         JOIN clients c ON c.id = a.client_id
+WHERE a.date_close IS NOT NULL
+  AND a.date_close BETWEEN 'start_date' AND 'end_date';
+```
 
 3. Определить ТОП 3 наиболее популярных вкладов банка (критерий –
    количество вкладчиков)
 
 ![3.png](queries/3.png)
 
+```postgresql
+SELECT c.deposit_id, name
+FROM deposits d
+         JOIN (SELECT a.deposit_id, COUNT(a.client_id) as count_clients
+               FROM accounts a
+               GROUP BY deposit_id
+               ORDER BY count_clients) c on c.deposit_id = d.id;
+```
+
 4. Определить вклад, который «принес» меньше всего денежных средств
    банку (сумма вложенных средств по вкладу) в течение заданного периода.
 
 ![4.png](queries/4.png)
 
+```postgresql
+SELECT *
+FROM deposits d
+         JOIN (SELECT r.id, SUM(amount_rub) as amount_sum
+               FROM (SELECT a.id, a.amount * c.in_rub as amount_rub
+                     FROM accounts a
+                              JOIN deposits d ON a.deposit_id = d.id
+                              JOIN currencies c on d.currency_id = c.id
+                     WHERE 'date_min' <= a.date_open
+                       AND a.date_close <= 'date_max') r
+               GROUP BY r.id
+               ORDER BY amount_sum
+               LIMIT 1) am ON am.id = d.id;
+```
+
 5. Получить ТОП 3 вкладчиков, имеющих вклады в иностранной валюте.
    Суммарный объем вкладов определяется в рублях.
 
 ![5.png](queries/5.png)
+
+```postgresql
+SELECT r.client_id, SUM(amount_rub) AS total_rub
+FROM (SELECT a.id, a.amount, a.client_id, a.id * in_rub AS amount_rub
+      FROM accounts a
+               JOIN deposits d ON a.deposit_id = d.id
+               JOIN currencies c on d.currency_id = c.id
+      WHERE c.name != 'рубль') r
+GROUP BY r.client_id
+ORDER BY total_rub DESC
+LIMIT 3;
+```
 
 6. Сформировать ведомость получения доходов клиентами банка
    по закрытым счетам за заданный период в табличной форме
@@ -340,3 +402,16 @@ from public.accounts
 где "Сумма накопления, руб." = " Сумма вложенная, руб." * ("Срок хранения, месяцев" * "Ставка, % годовых" : 12) : 100
 
 ![6.png](queries/6.png)
+
+```postgresql
+SELECT (amount_rub * duration * rate) / 1200 AS total_rub
+FROM (
+    SELECT a.id, a.amount * c.in_rub AS amount_rub, duration, rate
+      FROM accounts a
+               JOIN deposits d ON a.deposit_id = d.id
+               JOIN currencies c on d.currency_id = c.id
+      WHERE 'date_min' <= a.date_open
+        AND a.date_close <= 'date_max'
+      ) aa
+```
+
