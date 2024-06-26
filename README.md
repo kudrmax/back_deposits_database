@@ -72,21 +72,7 @@ ER-диаграмма создана через DataGrip.
 | name         | varchar(50)      |             | Название валюты   |
 | in_rub       | double precision |             | Курс к рублю      |
 
-### Код для создание базы данных
-
-База данных создавалась вручную через GUI интерфейс DataGrip. Код ниже сгенерирован автоматически.
-
-Например поэтому тут можно увидеть такие строки, как
-
-```postgresql
-id integer primary key not null default nextval('accounts_account_number_seq'::regclass),
-```
-
-Изначально вместо этой строки тут было
-
-```postgresql
-id serial primary key 
-```
+### Код для создание базы данн
 
 Код для создание БД:
 
@@ -192,122 +178,15 @@ VALUES ('Накопительный', 13, 10.00, 1),
        ('Молодежный', 36, 18.00, 1);
 ```
 
-Наполним остальные таблицы вымышленными данными. Данные сгенерированны через ChatGPT:
-
-```postgresql
-INSERT INTO public.employees (position_id, department_id)
-VALUES (1, 1),
-       (2, 1),
-       (3, 1),
-       (4, 1),
-       (1, 2),
-       (2, 2),
-       (3, 2),
-       (4, 2),
-       (1, 3),
-       (2, 3),
-       (3, 3),
-       (4, 3),
-       (1, 1),
-       (2, 2),
-       (3, 3),
-       (4, 1),
-       (1, 2),
-       (2, 3),
-       (3, 1),
-       (4, 2);
-
-INSERT INTO public.clients (full_name, passport, adress, phone, employee_id)
-VALUES ('Иванов Иван Иванович', '1234 567890', 'ул. Пушкина, д.1', '89001234567', 1),
-       ('Петров Петр Петрович', '2345 678901', 'ул. Лермонтова, д.2', '89007654321', 2),
-       ('Сидоров Сидор Сидорович', '3456 789012', 'ул. Толстого, д.3', '89001237890', 3),
-       ('Смирнова Анна Ивановна', '4567 890123', 'ул. Чехова, д.4', '89009876543', 4),
-       ('Васильева Ольга Петровна', '5678 901234', 'ул. Гоголя, д.5', '89008765432', 5),
-       ('Кузнецов Николай Сергеевич', '6789 012345', 'ул. Ленина, д.6', '89007654321', 6),
-       ('Попов Алексей Дмитриевич', '7890 123456', 'ул. Маяковского, д.7', '89006543210', 7),
-       ('Соколов Дмитрий Александрович', '8901 234567', 'ул. Достоевского, д.8', '89005432109', 8),
-       ('Морозова Екатерина Андреевна', '9012 345678', 'ул. Некрасова, д.9', '89004321098', 1),
-       ('Новиков Михаил Юрьевич', '0123 456789', 'ул. Белинского, д.10', '89003210987', 2),
-       ('Фёдорова Наталья Владимировна', '1234 567891', 'ул. Островского, д.11', '89002109876', 3),
-       ('Михайлова Алина Игоревна', '2345 678902', 'ул. Салтыкова, д.12', '89001098765', 4),
-       ('Орлова Юлия Романовна', '3456 789013', 'ул. Тургенева, д.13', '89009876544', 5),
-       ('Андреев Павел Олегович', '4567 890124', 'ул. Жуковского, д.14', '89008765433', 6),
-       ('Волков Алексей Михайлович', '5678 901235', 'ул. Гончарова, д.15', '89007654322', 7),
-       ('Зайцева Марина Викторовна', '6789 012346', 'ул. Есенина, д.16', '89006543211', 8);
-
-INSERT INTO public.accounts (client_id, deposit_id, date_open, date_close, amount)
-VALUES (1, 1, '2023-01-01', '2024-02-01', 100000.00),
-       (2, 2, '2023-02-01', '2024-08-01', 2000.00),
-       (3, 3, '2023-03-01', '2024-04-01', 15000.00),
-       (4, 4, '2023-04-01', '2024-04-01', 50000.00),
-       (5, 5, '2023-05-01', NULL, 30000.00),
-       (6, 1, '2023-06-01', '2024-07-01', 120000.00),
-       (7, 2, '2023-07-01', NULL, 2500.00),
-       (8, 3, '2023-08-01', '2024-09-01', 17000.00),
-       (9, 4, '2023-09-01', '2024-09-01', 55000.00),
-       (10, 5, '2023-10-01', NULL, 32000.00),
-       (11, 1, '2023-11-01', '2024-12-01', 130000.00),
-       (12, 2, '2023-12-01', NULL, 3000.00),
-       (13, 3, '2024-01-01', '2025-02-01', 20000.00),
-       (14, 4, '2024-02-01', '2025-02-01', 60000.00),
-       (15, 5, '2024-03-01', NULL, 35000.00),
-       (16, 1, '2024-04-01', NULL, 140000.00),
-       (17, 2, '2024-05-01', NULL, 3500.00),
-       (18, 3, '2024-06-01', NULL, 22000.00),
-       (19, 4, '2024-07-01', NULL, 65000.00),
-       (20, 5, '2024-08-01', NULL, 37000.00),
-       (1, 1, '2024-01-01', '2025-02-01', 110000.00),
-       (2, 2, '2024-02-01', '2025-08-01', 4000.00),
-       (3, 3, '2024-03-01', '2025-04-01', 18000.00),
-       (4, 4, '2024-04-01', '2025-04-01', 70000.00),
-       (5, 5, '2024-05-01', NULL, 40000.00),
-       (6, 1, '2024-06-01', NULL, 150000.00);
-```
-
-Проверка того, что все сработало и данные появились в БД:
-
-```postgresql
-select *
-from public.accounts
-         left join public.clients clients on accounts.client_id = clients.id
-         left join public.deposits deposits on accounts.deposit_id = deposits.id
-         left join public.employees employees on employees.id = clients.employee_id;
-```
-
-Резальтат запросов выше (экспортирован в формате markdown через DataGrip):
-
-| id | client\_id | deposit\_id | date\_open | date\_close | amount    | id | full\_name                    | passport    | adress                | phone       | employee\_id | id | name          | duration | rate  | currency\_id | id | position\_id | department\_id |
-|:---|:-----------|:------------|:-----------|:------------|:----------|:---|:------------------------------|:------------|:----------------------|:------------|:-------------|:---|:--------------|:---------|:------|:-------------|:---|:-------------|:---------------|
-| 61 | 9          | 4           | 2023-09-01 | 2024-09-01  | 55000.00  | 9  | Морозова Екатерина Андреевна  | 9012 345678 | ул. Некрасова, д.9    | 89004321098 | 1            | 4  | Пенсионный    | 12       | 12.00 | 1            | 1  | 1            | 1              |
-| 69 | 1          | 2           | 2024-05-01 | null        | 3500.00   | 1  | Иванов Иван Иванович          | 1234 567890 | ул. Пушкина, д.1      | 89001234567 | 1            | 2  | Капитал       | 18       | 7.00  | 2            | 1  | 1            | 1              |
-| 53 | 1          | 1           | 2023-01-01 | 2024-02-01  | 100000.00 | 1  | Иванов Иван Иванович          | 1234 567890 | ул. Пушкина, д.1      | 89001234567 | 1            | 1  | Накопительный | 13       | 10.00 | 1            | 1  | 1            | 1              |
-| 73 | 1          | 1           | 2024-01-01 | 2025-02-01  | 110000.00 | 1  | Иванов Иван Иванович          | 1234 567890 | ул. Пушкина, д.1      | 89001234567 | 1            | 1  | Накопительный | 13       | 10.00 | 1            | 1  | 1            | 1              |
-| 62 | 10         | 5           | 2023-10-01 | null        | 32000.00  | 10 | Новиков Михаил Юрьевич        | 0123 456789 | ул. Белинского, д.10  | 89003210987 | 2            | 5  | Молодежный    | 36       | 18.00 | 1            | 2  | 2            | 1              |
-| 70 | 2          | 3           | 2024-06-01 | null        | 22000.00  | 2  | Петров Петр Петрович          | 2345 678901 | ул. Лермонтова, д.2   | 89007654321 | 2            | 3  | Друзья        | 13       | 2.00  | 3            | 2  | 2            | 1              |
-| 54 | 2          | 2           | 2023-02-01 | 2024-08-01  | 2000.00   | 2  | Петров Петр Петрович          | 2345 678901 | ул. Лермонтова, д.2   | 89007654321 | 2            | 2  | Капитал       | 18       | 7.00  | 2            | 2  | 2            | 1              |
-| 74 | 2          | 2           | 2024-02-01 | 2025-08-01  | 4000.00   | 2  | Петров Петр Петрович          | 2345 678901 | ул. Лермонтова, д.2   | 89007654321 | 2            | 2  | Капитал       | 18       | 7.00  | 2            | 2  | 2            | 1              |
-| 71 | 3          | 4           | 2024-07-01 | null        | 65000.00  | 3  | Сидоров Сидор Сидорович       | 3456 789012 | ул. Толстого, д.3     | 89001237890 | 3            | 4  | Пенсионный    | 12       | 12.00 | 1            | 3  | 3            | 1              |
-| 55 | 3          | 3           | 2023-03-01 | 2024-04-01  | 15000.00  | 3  | Сидоров Сидор Сидорович       | 3456 789012 | ул. Толстого, д.3     | 89001237890 | 3            | 3  | Друзья        | 13       | 2.00  | 3            | 3  | 3            | 1              |
-| 75 | 3          | 3           | 2024-03-01 | 2025-04-01  | 18000.00  | 3  | Сидоров Сидор Сидорович       | 3456 789012 | ул. Толстого, д.3     | 89001237890 | 3            | 3  | Друзья        | 13       | 2.00  | 3            | 3  | 3            | 1              |
-| 63 | 11         | 1           | 2023-11-01 | 2024-12-01  | 130000.00 | 11 | Фёдорова Наталья Владимировна | 1234 567891 | ул. Островского, д.11 | 89002109876 | 3            | 1  | Накопительный | 13       | 10.00 | 1            | 3  | 3            | 1              |
-| 72 | 4          | 5           | 2024-08-01 | null        | 37000.00  | 4  | Смирнова Анна Ивановна        | 4567 890123 | ул. Чехова, д.4       | 89009876543 | 4            | 5  | Молодежный    | 36       | 18.00 | 1            | 4  | 4            | 1              |
-| 56 | 4          | 4           | 2023-04-01 | 2024-04-01  | 50000.00  | 4  | Смирнова Анна Ивановна        | 4567 890123 | ул. Чехова, д.4       | 89009876543 | 4            | 4  | Пенсионный    | 12       | 12.00 | 1            | 4  | 4            | 1              |
-| 76 | 4          | 4           | 2024-04-01 | 2025-04-01  | 70000.00  | 4  | Смирнова Анна Ивановна        | 4567 890123 | ул. Чехова, д.4       | 89009876543 | 4            | 4  | Пенсионный    | 12       | 12.00 | 1            | 4  | 4            | 1              |
-| 64 | 12         | 2           | 2023-12-01 | null        | 3000.00   | 12 | Михайлова Алина Игоревна      | 2345 678902 | ул. Салтыкова, д.12   | 89001098765 | 4            | 2  | Капитал       | 18       | 7.00  | 2            | 4  | 4            | 1              |
-| 57 | 5          | 5           | 2023-05-01 | null        | 30000.00  | 5  | Васильева Ольга Петровна      | 5678 901234 | ул. Гоголя, д.5       | 89008765432 | 5            | 5  | Молодежный    | 36       | 18.00 | 1            | 5  | 1            | 2              |
-| 77 | 5          | 5           | 2024-05-01 | null        | 40000.00  | 5  | Васильева Ольга Петровна      | 5678 901234 | ул. Гоголя, д.5       | 89008765432 | 5            | 5  | Молодежный    | 36       | 18.00 | 1            | 5  | 1            | 2              |
-| 65 | 13         | 3           | 2024-01-01 | 2025-02-01  | 20000.00  | 13 | Орлова Юлия Романовна         | 3456 789013 | ул. Тургенева, д.13   | 89009876544 | 5            | 3  | Друзья        | 13       | 2.00  | 3            | 5  | 1            | 2              |
-| 66 | 14         | 4           | 2024-02-01 | 2025-02-01  | 60000.00  | 14 | Андреев Павел Олегович        | 4567 890124 | ул. Жуковского, д.14  | 89008765433 | 6            | 4  | Пенсионный    | 12       | 12.00 | 1            | 6  | 2            | 2              |
-| 58 | 6          | 1           | 2023-06-01 | 2024-07-01  | 120000.00 | 6  | Кузнецов Николай Сергеевич    | 6789 012345 | ул. Ленина, д.6       | 89007654321 | 6            | 1  | Накопительный | 13       | 10.00 | 1            | 6  | 2            | 2              |
-| 78 | 6          | 1           | 2024-06-01 | null        | 150000.00 | 6  | Кузнецов Николай Сергеевич    | 6789 012345 | ул. Ленина, д.6       | 89007654321 | 6            | 1  | Накопительный | 13       | 10.00 | 1            | 6  | 2            | 2              |
-| 67 | 15         | 5           | 2024-03-01 | null        | 35000.00  | 15 | Волков Алексей Михайлович     | 5678 901235 | ул. Гончарова, д.15   | 89007654322 | 7            | 5  | Молодежный    | 36       | 18.00 | 1            | 7  | 3            | 2              |
-| 59 | 7          | 2           | 2023-07-01 | null        | 2500.00   | 7  | Попов Алексей Дмитриевич      | 7890 123456 | ул. Маяковского, д.7  | 89006543210 | 7            | 2  | Капитал       | 18       | 7.00  | 2            | 7  | 3            | 2              |
-| 60 | 8          | 3           | 2023-08-01 | 2024-09-01  | 17000.00  | 8  | Соколов Дмитрий Александрович | 8901 234567 | ул. Достоевского, д.8 | 89005432109 | 8            | 3  | Друзья        | 13       | 2.00  | 3            | 8  | 4            | 2              |
-| 68 | 16         | 1           | 2024-04-01 | null        | 140000.00 | 16 | Зайцева Марина Викторовна     | 6789 012346 | ул. Есенина, д.16     | 89006543211 | 8            | 1  | Накопительный | 13       | 10.00 | 1            | 8  | 4            | 2              |
-
-Отлично, все данные загрузились (остальные данные я проверил вручную отдельно).
-
 ### Реализация задания
+
+Код для очистки БД:
+
+```postgresql
+TRUNCATE TABLE public.accounts RESTART IDENTITY CASCADE;
+TRUNCATE TABLE public.clients RESTART IDENTITY CASCADE;
+TRUNCATE TABLE public.employees RESTART IDENTITY CASCADE;
+```
 
 1. Получить список сотрудников, курирующих вкладчиков вклада
    «Накопительный»
@@ -317,11 +196,76 @@ from public.accounts
 ```postgresql
 SELECT e.id, d.name
 FROM employees e
-         JOIN clients c ON e.id = c.employee_id
-         JOIN accounts a ON c.id = a.client_id
-         JOIN deposits d ON a.deposit_id = d.id
+JOIN clients c ON e.id = c.employee_id
+JOIN accounts a ON c.id = a.client_id
+JOIN deposits d ON a.deposit_id = d.id
 WHERE d.name = 'Накопительный';
 ```
+
+0 строк
+
+```postgresql
+TRUNCATE TABLE public.accounts RESTART IDENTITY CASCADE;
+TRUNCATE TABLE public.clients RESTART IDENTITY CASCADE;
+TRUNCATE TABLE public.employees RESTART IDENTITY CASCADE;
+
+INSERT INTO public.employees (position_id, department_id)
+VALUES (1, 1), (2, 2);
+
+INSERT INTO public.clients (full_name, passport, adress, phone, employee_id)
+VALUES ('Иван Иванов', '1234 567890', 'ул. Перескокова, д. 1', '89991234567', 1),
+       ('Петр Петров', '2345 678901', 'ул. Кочета, д. 2', '89992345678', 2);
+
+INSERT INTO public.accounts (client_id, deposit_id, date_open, date_close, amount)
+VALUES (1, 2, '2023-01-01', NULL, 100000.00),
+       (2, 3, '2023-01-01', NULL, 200000.00);
+```
+
+1 строка
+
+```postgresql
+TRUNCATE TABLE public.accounts RESTART IDENTITY CASCADE;
+TRUNCATE TABLE public.clients RESTART IDENTITY CASCADE;
+TRUNCATE TABLE public.employees RESTART IDENTITY CASCADE;
+
+INSERT INTO public.employees (position_id, department_id)
+VALUES (1, 1);
+
+INSERT INTO public.clients (full_name, passport, adress, phone, employee_id)
+VALUES ('Иван Иванов', '1234 567890', 'ул. Перескокова, д. 1', '89991234567', 1);
+
+INSERT INTO public.accounts (client_id, deposit_id, date_open, date_close, amount)
+VALUES (1, 1, '2023-01-01', NULL, 100000.00);
+```
+
+| id | name |
+| :--- | :--- |
+| 1 | Накопительный |
+
+2+ строки
+
+```postgresql
+TRUNCATE TABLE public.accounts RESTART IDENTITY CASCADE;
+TRUNCATE TABLE public.clients RESTART IDENTITY CASCADE;
+TRUNCATE TABLE public.employees RESTART IDENTITY CASCADE;
+
+INSERT INTO public.employees (position_id, department_id)
+VALUES (1, 1), (2, 1);
+
+INSERT INTO public.clients (full_name, passport, adress, phone, employee_id)
+VALUES ('Иван Иванов', '1234 567890', 'ул. Перескокова, д. 1', '89991234567', 1),
+       ('Петр Петров', '2345 678901', 'ул. Кочета, д. 2', '89992345678', 2);
+
+INSERT INTO public.accounts (client_id, deposit_id, date_open, date_close, amount)
+VALUES (1, 1, '2023-01-01', NULL, 100000.00),
+       (2, 1, '2023-01-01', NULL, 200000.00);
+```
+
+| id | name |
+| :--- | :--- |
+| 1 | Накопительный |
+| 2 | Накопительный |
+
 
 2. Получить список вкладчиков, закрывших свои вклады, в заданный период
    времени
@@ -329,18 +273,78 @@ WHERE d.name = 'Накопительный';
 ![2.png](queries/2.png)
 
 ```postgresql
-SELECT c.id, c.full_name, c.passport, c.adress, c.phone, a.date_close
+SELECT c.id, c.full_name
 FROM clients c
-         JOIN accounts a ON c.id = a.client_id
+JOIN accounts a ON c.id = a.client_id
 WHERE a.date_close IS NOT NULL
-  AND a.date_close BETWEEN 'start_date' AND 'end_date';
-
-SELECT c.id, c.full_name, c.passport, c.adress, c.phone, a.date_close
-FROM accounts a
-         JOIN clients c ON c.id = a.client_id
-WHERE a.date_close IS NOT NULL
-  AND a.date_close BETWEEN 'start_date' AND 'end_date';
+AND a.date_close BETWEEN '2023-01-01' AND '2023-12-31';
 ```
+
+0 строк
+
+```postgresql
+TRUNCATE TABLE public.accounts RESTART IDENTITY CASCADE;
+TRUNCATE TABLE public.clients RESTART IDENTITY CASCADE;
+TRUNCATE TABLE public.employees RESTART IDENTITY CASCADE;
+
+INSERT INTO public.employees (position_id, department_id)
+VALUES (1, 1), (2, 2);
+
+INSERT INTO public.clients (full_name, passport, adress, phone, employee_id)
+VALUES ('Иван Иванов', '1234 567890', 'ул. Перескокова, д. 1', '89991234567', 1),
+       ('Петр Петров', '2345 678901', 'ул. Кочета, д. 2', '89992345678', 2);
+
+INSERT INTO public.accounts (client_id, deposit_id, date_open, date_close, amount)
+VALUES (1, 1, '2023-01-01', NULL, 100000.00), 
+       (2, 1, '2022-01-01', '2022-12-31', 200000.00); 
+```
+
+1 строка
+
+```postgresql
+TRUNCATE TABLE public.accounts RESTART IDENTITY CASCADE;
+TRUNCATE TABLE public.clients RESTART IDENTITY CASCADE;
+TRUNCATE TABLE public.employees RESTART IDENTITY CASCADE;
+
+INSERT INTO public.employees (position_id, department_id)
+VALUES (1, 1);
+
+INSERT INTO public.clients (full_name, passport, adress, phone, employee_id)
+VALUES ('Иван Иванов', '1234 567890', 'ул. Перескокова, д. 1', '89991234567', 1);
+
+INSERT INTO public.accounts (client_id, deposit_id, date_open, date_close, amount)
+VALUES (1, 1, '2023-01-01', '2023-06-01', 100000.00);
+```
+
+| id | full\_name |
+| :--- | :--- |
+| 1 | Иван Иванов |
+
+
+2+ строки
+
+```postgresql
+TRUNCATE TABLE public.accounts RESTART IDENTITY CASCADE;
+TRUNCATE TABLE public.clients RESTART IDENTITY CASCADE;
+TRUNCATE TABLE public.employees RESTART IDENTITY CASCADE;
+
+INSERT INTO public.employees (position_id, department_id)
+VALUES (1, 1), (2, 1);
+
+INSERT INTO public.clients (full_name, passport, adress, phone, employee_id)
+VALUES ('Иван Иванов', '1234 567890', 'ул. Перескокова, д. 1', '89991234567', 1),
+       ('Петр Петров', '2345 678901', 'ул. Кочета, д. 2', '89992345678', 2);
+
+INSERT INTO public.accounts (client_id, deposit_id, date_open, date_close, amount)
+VALUES (1, 1, '2023-01-01', '2023-06-01', 100000.00),
+       (2, 1, '2023-01-01', '2023-11-15', 200000.00);
+```
+
+| id | full\_name |
+| :--- | :--- |
+| 1 | Иван Иванов |
+| 2 | Петр Петров |
+
 
 3. Определить ТОП 3 наиболее популярных вкладов банка (критерий –
    количество вкладчиков)
@@ -350,11 +354,82 @@ WHERE a.date_close IS NOT NULL
 ```postgresql
 SELECT c.deposit_id, name
 FROM deposits d
-         JOIN (SELECT a.deposit_id, COUNT(a.client_id) as count_clients
-               FROM accounts a
-               GROUP BY deposit_id
-               ORDER BY count_clients) c on c.deposit_id = d.id;
+JOIN (
+    SELECT a.deposit_id, COUNT(a.client_id) as count_clients
+    FROM accounts a
+    GROUP BY deposit_id
+    ORDER BY count_clients DESC
+) c on c.deposit_id = d.id
+LIMIT 3;
 ```
+
+0 строк
+
+```postgresql
+TRUNCATE TABLE public.accounts RESTART IDENTITY CASCADE;
+TRUNCATE TABLE public.clients RESTART IDENTITY CASCADE;
+TRUNCATE TABLE public.employees RESTART IDENTITY CASCADE;
+
+INSERT INTO public.employees (position_id, department_id)
+VALUES (1, 1), (2, 2);
+
+INSERT INTO public.clients (full_name, passport, adress, phone, employee_id)
+VALUES ('Иван Иванов', '1234 567890', 'ул. Перескокова, д. 1', '89991234567', 1),
+       ('Петр Петров', '2345 678901', 'ул. Кочета, д. 2', '89992345678', 2);
+```
+
+1 строка
+
+```postgresql
+TRUNCATE TABLE public.accounts RESTART IDENTITY CASCADE;
+TRUNCATE TABLE public.clients RESTART IDENTITY CASCADE;
+TRUNCATE TABLE public.employees RESTART IDENTITY CASCADE;
+
+INSERT INTO public.employees (position_id, department_id)
+VALUES (1, 1);
+
+INSERT INTO public.clients (full_name, passport, adress, phone, employee_id)
+VALUES ('Иван Иванов', '1234 567890', 'ул. Перескокова, д. 1', '89991234567', 1);
+
+INSERT INTO public.accounts (client_id, deposit_id, date_open, date_close, amount)
+VALUES (1, 1, '2023-01-01', NULL, 100000.00);
+```
+
+| deposit\_id | name |
+| :--- | :--- |
+| 1 | Накопительный |
+
+
+
+2+ строки
+
+```postgresql
+TRUNCATE TABLE public.accounts RESTART IDENTITY CASCADE;
+TRUNCATE TABLE public.clients RESTART IDENTITY CASCADE;
+TRUNCATE TABLE public.employees RESTART IDENTITY CASCADE;
+
+INSERT INTO public.employees (position_id, department_id)
+VALUES (1, 1), (2, 1);
+
+INSERT INTO public.clients (full_name, passport, adress, phone, employee_id)
+VALUES ('Иван Иванов', '1234 567890', 'ул. Перескокова, д. 1', '89991234567', 1),
+       ('Петр Петров', '2345 678901', 'ул. Кочета, д. 2', '89992345678', 2),
+       ('Сергей Сергеев', '3456 789012', 'ул. Миколаенко, д. 3', '89993456789', 1),
+       ('Алексей Алексеев', '4567 890123', 'ул. Парусниковой, д. 4', '89994567890', 2);
+
+INSERT INTO public.accounts (client_id, deposit_id, date_open, date_close, amount)
+VALUES (1, 1, '2023-01-01', NULL, 100000.00),
+       (2, 1, '2023-02-01', NULL, 150000.00),
+       (3, 2, '2023-03-01', NULL, 200000.00),
+       (4, 3, '2023-04-01', NULL, 250000.00);
+```
+
+| deposit\_id | name |
+| :--- | :--- |
+| 1 | Накопительный |
+| 2 | Капитал |
+| 3 | Друзья |
+
 
 4. Определить вклад, который «принес» меньше всего денежных средств
    банку (сумма вложенных средств по вкладу) в течение заданного периода.
@@ -362,19 +437,69 @@ FROM deposits d
 ![4.png](queries/4.png)
 
 ```postgresql
-SELECT *
+SELECT am.id, d.name
 FROM deposits d
-         JOIN (SELECT r.id, SUM(amount_rub) as amount_sum
-               FROM (SELECT a.id, a.amount * c.in_rub as amount_rub
-                     FROM accounts a
-                              JOIN deposits d ON a.deposit_id = d.id
-                              JOIN currencies c on d.currency_id = c.id
-                     WHERE 'date_min' <= a.date_open
-                       AND a.date_close <= 'date_max') r
-               GROUP BY r.id
-               ORDER BY amount_sum
-               LIMIT 1) am ON am.id = d.id;
+JOIN (
+    SELECT r.id, SUM(amount_rub) as amount_sum
+    FROM (
+        SELECT a.id, a.amount * c.in_rub as amount_rub
+        FROM accounts a
+        JOIN deposits d ON a.deposit_id = d.id
+        JOIN currencies c on d.currency_id = c.id
+        WHERE '2023-01-01' <= a.date_open AND a.date_close <= '2023-12-31'
+    ) r
+    GROUP BY r.id
+    ORDER BY amount_sum
+    LIMIT 1
+) am ON am.id = d.id;
 ```
+
+0 строк
+
+```postgresql
+TRUNCATE TABLE public.accounts RESTART IDENTITY CASCADE;
+TRUNCATE TABLE public.clients RESTART IDENTITY CASCADE;
+TRUNCATE TABLE public.employees RESTART IDENTITY CASCADE;
+
+INSERT INTO public.employees (position_id, department_id)
+VALUES (1, 1), (2, 2);
+
+INSERT INTO public.clients (full_name, passport, adress, phone, employee_id)
+VALUES ('Иван Иванов', '1234 567890', 'ул. Перескокова, д. 1', '89991234567', 1),
+       ('Петр Петров', '2345 678901', 'ул. Кочета, д. 2', '89992345678', 2);
+
+INSERT INTO public.accounts (client_id, deposit_id, date_open, date_close, amount)
+VALUES (1, 1, '2022-01-01', '2022-12-31', 100000.00),
+       (2, 2, '2022-01-01', '2022-12-31', 150000.00);
+```
+
+1 строка
+
+```postgresql
+TRUNCATE TABLE public.accounts RESTART IDENTITY CASCADE;
+TRUNCATE TABLE public.clients RESTART IDENTITY CASCADE;
+TRUNCATE TABLE public.employees RESTART IDENTITY CASCADE;
+
+INSERT INTO public.employees (position_id, department_id)
+VALUES (1, 1), (2, 1);
+
+INSERT INTO public.clients (full_name, passport, adress, phone, employee_id)
+VALUES ('Иван Иванов', '1234 567890', 'ул. Перескокова, д. 1', '89991234567', 1),
+       ('Петр Петров', '2345 678901', 'ул. Кочета, д. 2', '89992345678', 2),
+       ('Сергей Сергеев', '3456 789012', 'ул. Миколаенко, д. 3', '89993456789', 1),
+       ('Алексей Алексеев', '4567 890123', 'ул. Парусниковой, д. 4', '89994567890', 2);
+
+INSERT INTO public.accounts (client_id, deposit_id, date_open, date_close, amount)
+VALUES (1, 1, '2023-01-01', '2023-06-01', 100000.00), 
+       (2, 2, '2023-02-01', '2023-07-01', 150000.00), 
+       (3, 3, '2023-03-01', '2023-08-01', 200000.00), 
+       (4, 1, '2023-04-01', '2023-09-01', 50000.00);  
+```
+
+| id | name |
+| :--- | :--- |
+| 4 | Пенсионный |
+
 
 5. Получить ТОП 3 вкладчиков, имеющих вклады в иностранной валюте.
    Суммарный объем вкладов определяется в рублях.
@@ -382,16 +507,72 @@ FROM deposits d
 ![5.png](queries/5.png)
 
 ```postgresql
-SELECT r.client_id, SUM(amount_rub) AS total_rub
-FROM (SELECT a.id, a.amount, a.client_id, a.id * in_rub AS amount_rub
-      FROM accounts a
-               JOIN deposits d ON a.deposit_id = d.id
-               JOIN currencies c on d.currency_id = c.id
-      WHERE c.name != 'рубль') r
-GROUP BY r.client_id
-ORDER BY total_rub DESC
-LIMIT 3;
+SELECT id, full_name
+FROM (
+    SELECT r.client_id, SUM(amount_rub) AS total_rub
+    FROM (
+        SELECT a.id, a.client_id, a.id * in_rub AS amount_rub, c.name
+        FROM accounts a
+        JOIN deposits d ON a.deposit_id = d.id
+        JOIN currencies c on d.currency_id = c.id
+        WHERE c.name != 'Рубли'
+    ) r
+    GROUP BY r.client_id
+    ORDER BY total_rub DESC
+    LIMIT 3
+) p
+JOIN clients ON client_id = clients.id;
 ```
+
+0 строк
+
+```postgresql
+TRUNCATE TABLE public.accounts RESTART IDENTITY CASCADE;
+TRUNCATE TABLE public.clients RESTART IDENTITY CASCADE;
+TRUNCATE TABLE public.employees RESTART IDENTITY CASCADE;
+
+INSERT INTO public.employees (position_id, department_id)
+VALUES (1, 1), (2, 2);
+
+INSERT INTO public.clients (full_name, passport, adress, phone, employee_id)
+VALUES ('Иван Иванов', '1234 567890', 'ул. Перескокова, д. 1', '89991234567', 1),
+       ('Петр Петров', '2345 678901', 'ул. Кочета, д. 2', '89992345678', 2);
+
+INSERT INTO public.accounts (client_id, deposit_id, date_open, date_close, amount)
+VALUES (1, 1, '2023-01-01', NULL, 100000.00);
+```
+
+3 строки
+
+```postgresql
+TRUNCATE TABLE public.accounts RESTART IDENTITY CASCADE;
+TRUNCATE TABLE public.clients RESTART IDENTITY CASCADE;
+TRUNCATE TABLE public.employees RESTART IDENTITY CASCADE;
+
+INSERT INTO public.employees (position_id, department_id)
+VALUES (1, 1), (2, 1);
+
+INSERT INTO public.clients (full_name, passport, adress, phone, employee_id)
+VALUES ('Иван Иванов', '1234 567890', 'ул. Перескокова, д. 1', '89991234567', 1),
+       ('Петр Петров', '2345 678901', 'ул. Кочета, д. 2', '89992345678', 2),
+       ('Сергей Сергеев', '3456 789012', 'ул. Миколаенко, д. 3', '89993456789', 1),
+       ('Алексей Алексеев', '4567 890123', 'ул. Парусниковой, д. 4', '89994567890', 2);
+
+INSERT INTO public.accounts (client_id, deposit_id, date_open, date_close, amount)
+VALUES (1, 1, '2023-01-01', '2023-06-01', 100000.00), 
+       (2, 2, '2023-02-01', '2023-07-01', 150000.00), 
+       (2, 2, '2023-02-02', '2023-07-01', 160000.00), 
+       (4, 2, '2023-02-03', '2023-07-01', 170000.00), 
+       (3, 3, '2023-03-01', '2023-08-01', 200000.00), 
+       (4, 1, '2023-04-01', '2023-09-01', 50000.00);  
+```
+
+| id | full\_name |
+| :--- | :--- |
+| 2 | Петр Петров |
+| 3 | Сергей Сергеев |
+| 4 | Алексей Алексеев |
+
 
 6. Сформировать ведомость получения доходов клиентами банка
    по закрытым счетам за заданный период в табличной форме
@@ -404,14 +585,80 @@ LIMIT 3;
 ![6.png](queries/6.png)
 
 ```postgresql
-SELECT (amount_rub * duration * rate) / 1200 AS total_rub
+SELECT name, duration, rate, amount_rub, (amount_rub * duration * rate) / 1200 AS total_rub
 FROM (
-    SELECT a.id, a.amount * c.in_rub AS amount_rub, duration, rate
-      FROM accounts a
-               JOIN deposits d ON a.deposit_id = d.id
-               JOIN currencies c on d.currency_id = c.id
-      WHERE 'date_min' <= a.date_open
-        AND a.date_close <= 'date_max'
-      ) aa
+    SELECT a.amount * c.in_rub AS amount_rub, duration, rate, d.name
+    FROM accounts a
+    JOIN deposits d ON a.deposit_id = d.id
+    JOIN currencies c on d.currency_id = c.id
+    WHERE '2023-01-01' <= a.date_open
+    AND a.date_close <= '2023-12-31'
+) aa;
+```
+0 строк
+
+```postgresql
+TRUNCATE TABLE public.accounts RESTART IDENTITY CASCADE;
+TRUNCATE TABLE public.clients RESTART IDENTITY CASCADE;
+TRUNCATE TABLE public.employees RESTART IDENTITY CASCADE;
+
+INSERT INTO public.employees (position_id, department_id)
+VALUES (1, 1), (2, 2);
+
+INSERT INTO public.clients (full_name, passport, adress, phone, employee_id)
+VALUES ('Иван Иванов', '1234 567890', 'ул. Перескокова, д. 1', '89991234567', 1),
+       ('Петр Петров', '2345 678901', 'ул. Кочета, д. 2', '89992345678', 2);
+
+INSERT INTO public.accounts (client_id, deposit_id, date_open, date_close, amount)
+VALUES (1, 1, '2022-01-01', '2022-12-31', 100000.00);
 ```
 
+1 строка
+
+```postgresql
+TRUNCATE TABLE public.accounts RESTART IDENTITY CASCADE;
+TRUNCATE TABLE public.clients RESTART IDENTITY CASCADE;
+TRUNCATE TABLE public.employees RESTART IDENTITY CASCADE;
+
+INSERT INTO public.employees (position_id, department_id)
+VALUES (1, 1);
+
+INSERT INTO public.clients (full_name, passport, adress, phone, employee_id)
+VALUES ('Иван Иванов', '1234 567890', 'ул. Перескокова, д. 1', '89991234567', 1);
+
+INSERT INTO public.accounts (client_id, deposit_id, date_open, date_close, amount)
+VALUES (1, 2, '2023-01-01', '2023-06-01', 100000.00); 
+```
+
+| name | duration | rate | amount\_rub | total\_rub |
+| :--- | :--- | :--- | :--- | :--- |
+| Капитал | 18 | 7.00 | 8935000 | 938175 |
+
+
+2+ строки
+
+```postgresql
+TRUNCATE TABLE public.accounts RESTART IDENTITY CASCADE;
+TRUNCATE TABLE public.clients RESTART IDENTITY CASCADE;
+TRUNCATE TABLE public.employees RESTART IDENTITY CASCADE;
+
+INSERT INTO public.employees (position_id, department_id)
+VALUES (1, 1), (2, 1);
+
+INSERT INTO public.clients (full_name, passport, adress, phone, employee_id)
+VALUES ('Иван Иванов', '1234 567890', 'ул. Перескокова, д. 1', '89991234567', 1),
+       ('Петр Петров', '2345 678901', 'ул. Кочета, д. 2', '89992345678', 2),
+       ('Сергей Сергеев', '3456 789012', 'ул. Миколаенко, д. 3', '89993456789', 1),
+       ('Алексей Алексеев', '4567 890123', 'ул. Парусниковой, д. 4', '89994567890', 2);
+
+INSERT INTO public.accounts (client_id, deposit_id, date_open, date_close, amount)
+VALUES (1, 2, '2023-01-01', '2023-06-01', 100000.00),
+       (2, 3, '2023-02-01', '2023-07-01', 150000.00),
+       (3, 2, '2023-03-01', '2023-08-01', 200000.00);
+```
+
+| name | duration | rate | amount\_rub | total\_rub |
+| :--- | :--- | :--- | :--- | :--- |
+| Капитал | 18 | 7.00 | 8935000 | 938175 |
+| Друзья | 13 | 2.00 | 1890000 | 40950 |
+| Капитал | 18 | 7.00 | 17870000 | 1876350 |
