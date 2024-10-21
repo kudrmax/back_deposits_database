@@ -129,4 +129,33 @@ FROM departments;
 |:---|:---------------|:-----------------|:------------|:---------------------------|
 | 1  | 1              | Отдел вкладов    | postgres    | 2024-10-21 12:18:40.620103 |
 
-# Задание 4
+# Задание 4. Бекап
+
+Создать резервную копию БД
+
+```bash
+pg_dump -h localhost -p 5432 -U postgres -d deposit > backup.sql
+```
+
+[Посмотреть SQL код бекапа](backup.sql)
+
+Удалить БД
+
+![img.png](../docs/до_удаления.png)
+
+```postgresql
+DROP TABLE deposits, accounts, clients, currencies, deleted_departments, departments, employees, positions CASCADE;
+```
+
+![img.png](../docs/после_удаления.png)
+
+Восстановить БД
+
+```bash
+psql -h localhost -p 5432 -d deposit -U postgres -f backup.sql
+```
+
+![img.png](../docs/после_восстановления.png)
+
+
+
