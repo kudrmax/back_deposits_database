@@ -55,6 +55,78 @@ psql -h localhost -p 5432 -d deposit -U postgres
 \copy (SELECT * FROM deposits) TO 'deposits.csv' DELIMITER ',' CSV HEADER;
 ```
 
-# Задание 3
+# Задание 3. Триггер
+
+- Триггер: удаление записи в справочнике departments
+- Действие: сохранение старой записи в отдельной таблице с указанием данных инициатора изменений
+
+Создание таблицы для хранения удаленных записей в справочнике departments
+
+```postgresql
+CREATE TABLE deleted_departments
+(
+    id              SERIAL PRIMARY KEY,
+    department_id   INT         NOT NULL,
+    department_name VARCHAR(50) NOT NULL,
+    deleted_by      VARCHAR(50) NOT NULL,
+    deleted_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+Функция для триггера:
+
+```postgresql
+CREATE FUNCTION log_department_deletion()
+    RETURNS TRIGGER AS
+$$
+BEGIN
+    INSERT INTO deleted_departments(department_id, department_name, deleted_by)
+    VALUES (OLD.id, OLD.name, session_user);
+    RETURN OLD;
+END;
+$$
+    LANGUAGE plpgsql;
+```
+
+Триггер:
+
+```postgresql
+CREATE TRIGGER trigger_department_deletion
+    BEFORE DELETE
+    ON departments
+    FOR EACH ROW
+EXECUTE FUNCTION log_department_deletion();
+```
+
+Проверка:
+
+```postgresql
+SELECT *
+FROM departments;
+DELETE
+FROM departments
+WHERE id = 1;
+SELECT *
+FROM departments;
+```
+
+До:
+
+| id | name                        |
+|:---|:----------------------------|
+| 1  | Отдел вкладов               |
+| 2  | Отдел обслуживания клиентов |
+| 3  | Отдел маркетинга            |
+
+После:
+
+| id | name                        |
+|:---|:----------------------------|
+| 2  | Отдел обслуживания клиентов |
+| 3  | Отдел маркетинга            |
+
+| id | department\_id | department\_name | deleted\_by | deleted\_at                |
+|:---|:---------------|:-----------------|:------------|:---------------------------|
+| 1  | 1              | Отдел вкладов    | postgres    | 2024-10-21 12:18:40.620103 |
 
 # Задание 4
