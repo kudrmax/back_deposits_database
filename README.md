@@ -191,7 +191,7 @@ TRUNCATE TABLE public.employees RESTART IDENTITY CASCADE;
 1. Получить список сотрудников, курирующих вкладчиков вклада
    «Накопительный»
 
-![1.png](queries/1.png)
+![1.png](task1-2/queries/1.png)
 
 ```postgresql
 SELECT e.id, d.name
@@ -270,7 +270,7 @@ VALUES (1, 1, '2023-01-01', NULL, 100000.00),
 2. Получить список вкладчиков, закрывших свои вклады, в заданный период
    времени
 
-![2.png](queries/2.png)
+![2.png](task1-2/queries/2.png)
 
 ```postgresql
 SELECT c.id, c.full_name
@@ -349,7 +349,7 @@ VALUES (1, 1, '2023-01-01', '2023-06-01', 100000.00),
 3. Определить ТОП 3 наиболее популярных вкладов банка (критерий –
    количество вкладчиков)
 
-![3.png](queries/3.png)
+![3.png](task1-2/queries/3.png)
 
 ```postgresql
 SELECT c.deposit_id, name
@@ -434,7 +434,7 @@ VALUES (1, 1, '2023-01-01', NULL, 100000.00),
 4. Определить вклад, который «принес» меньше всего денежных средств
    банку (сумма вложенных средств по вкладу) в течение заданного периода.
 
-![4.png](queries/4.png)
+![4.png](task1-2/queries/4.png)
 
 ```postgresql
 SELECT am.id, d.name
@@ -504,7 +504,7 @@ VALUES (1, 1, '2023-01-01', '2023-06-01', 100000.00),
 5. Получить ТОП 3 вкладчиков, имеющих вклады в иностранной валюте.
    Суммарный объем вкладов определяется в рублях.
 
-![5.png](queries/5.png)
+![5.png](task1-2/queries/5.png)
 
 ```postgresql
 SELECT id, full_name
@@ -582,7 +582,7 @@ VALUES (1, 1, '2023-01-01', '2023-06-01', 100000.00),
 
 где "Сумма накопления, руб." = " Сумма вложенная, руб." * ("Срок хранения, месяцев" * "Ставка, % годовых" : 12) : 100
 
-![6.png](queries/6.png)
+![6.png](task1-2/queries/6.png)
 
 ```postgresql
 SELECT name, duration, rate, amount_rub, (amount_rub * duration * rate) / 1200 AS total_rub
