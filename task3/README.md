@@ -160,10 +160,8 @@ pg_dump -h localhost -p 5432 -U postgres -d deposit > backup.sql
 ![img.png](../docs/до_удаления.png)
 
 ```postgresql
-DROP TABLE deposits, accounts, clients, currencies, deleted_departments, departments, employees, positions CASCADE;
+DROP DATABASE deposit;
 ```
-
-![img.png](../docs/после_удаления.png)
 
 Восстановить БД
 
